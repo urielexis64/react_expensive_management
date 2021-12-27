@@ -6,15 +6,27 @@ import NewExpense from "./img/nuevo-gasto.svg";
 import {generateId} from "./helpers";
 
 function App() {
-	const [expenses, setExpenses] = useState([]);
+	const [expenses, setExpenses] = useState(JSON.parse(localStorage.getItem("expenses")) ?? []);
 
-	const [budget, setBudget] = useState(0);
+	const [budget, setBudget] = useState(Number(localStorage.getItem("budget")) ?? 0);
 	const [isValidBudget, setIsValidBudget] = useState(false);
 
 	const [modal, setModal] = useState(false);
 	const [animateModal, setAnimateModal] = useState(false);
 
 	const [editExpense, setEditExpense] = useState({});
+
+	useEffect(() => {
+		setIsValidBudget(budget > 0);
+	}, []);
+
+	useEffect(() => {
+		localStorage.setItem("budget", budget ?? 0);
+	}, [budget]);
+
+	useEffect(() => {
+		localStorage.setItem("expenses", JSON.stringify(expenses));
+	}, [expenses]);
 
 	useEffect(() => {
 		if (editExpense.id) {
