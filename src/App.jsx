@@ -1,6 +1,7 @@
 import {useState, useEffect} from "react";
 import Header from "./components/Header";
 import Modal from "./components/Modal";
+import Filters from "./components/Filters";
 import ExpenseList from "./components/ExpenseList";
 import NewExpense from "./img/nuevo-gasto.svg";
 import {generateId} from "./helpers";
@@ -15,6 +16,9 @@ function App() {
 	const [animateModal, setAnimateModal] = useState(false);
 
 	const [editExpense, setEditExpense] = useState({});
+
+	const [filter, setFilter] = useState("default");
+	const [filteredExpenses, setFilteredExpenses] = useState([]);
 
 	useEffect(() => {
 		setIsValidBudget(budget > 0);
@@ -36,6 +40,12 @@ function App() {
 			}, 300);
 		}
 	}, [editExpense]);
+
+	useEffect(() => {
+		const filteredExpenses = expenses.filter((expense) => expense.category === filter);
+
+		setFilteredExpenses(filteredExpenses);
+	}, [filter]);
 
 	const handleNewExpense = () => {
 		setModal(true);
@@ -82,8 +92,10 @@ function App() {
 			{isValidBudget && (
 				<>
 					<main>
+						<Filters filter={filter} setFilter={setFilter} />
+
 						<ExpenseList
-							expenses={expenses}
+							expenses={filter === "default" ? expenses : filteredExpenses}
 							setEditExpense={setEditExpense}
 							handleRemoveExpense={handleRemoveExpense}
 						/>
