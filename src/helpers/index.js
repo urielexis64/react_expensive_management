@@ -14,3 +14,10 @@ export const formatDate = (date) => {
 
 	return newDate.toLocaleDateString("es-ES", options);
 };
+
+export const formatAmount = (amount) => {
+	return amount.toLocaleString("en-US", {
+		style: "currency",
+		currency: "USD",
+	});
+};

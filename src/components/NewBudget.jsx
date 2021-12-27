@@ -1,12 +1,12 @@
 import {useState} from "react";
 import Message from "./Message";
 
-const NewBudget = ({presupuesto, setPresupuesto, setIsValidBudget}) => {
+const NewBudget = ({budget, setBudget, setIsValidBudget}) => {
 	const [message, setMessage] = useState("");
 
 	const handleBudget = (e) => {
 		e.preventDefault();
-		if (!presupuesto || presupuesto <= 0) {
+		if (!budget || budget <= 0) {
 			setMessage("Is not a valid budget");
 			return;
 		}
@@ -18,17 +18,17 @@ const NewBudget = ({presupuesto, setPresupuesto, setIsValidBudget}) => {
 		<div className='contenedor-presupuesto contenedor sombra'>
 			<form className='formulario' onSubmit={handleBudget}>
 				<div className='campo'>
-					<label htmlFor='presupuesto'>Budget</label>
+					<label htmlFor='budget'>Budget</label>
 					<input
 						type='number'
-						id='presupuesto'
+						id='budget'
 						className='nuevo-presupuesto'
-						placeholder='Agrega tu presupuesto'
-						value={presupuesto}
-						onChange={(e) => setPresupuesto(Number(e.target.value))}
+						placeholder='Add your budget'
+						value={budget}
+						onChange={(e) => setBudget(Number(e.target.value))}
 					/>
 
-					<input type='submit' className='boton' value='Agregar' />
+					<input type='submit' className='boton' value='Add' />
 					{message && <Message tipo='error' children={message} />}
 				</div>
 			</form>

@@ -65,7 +65,7 @@ const Modal = ({setModal, animateModal, setAnimateModal, saveExpense}) => {
 					<label htmlFor='amount'>Amount</label>
 					<input
 						value={amount}
-						onChange={(e) => setAmount(e.target.value)}
+						onChange={(e) => setAmount(Number(e.target.value))}
 						type='number'
 						id='amount'
 						placeholder='Add the expense amount e.g. 200'

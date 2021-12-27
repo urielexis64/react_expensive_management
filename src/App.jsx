@@ -5,7 +5,7 @@ import ExpenseList from "./components/ExpenseList";
 import NewExpense from "./img/nuevo-gasto.svg";
 
 function App() {
-	const [presupuesto, setPresupuesto] = useState(0);
+	const [budget, setBudget] = useState(0);
 	const [isValidBudget, setIsValidBudget] = useState(false);
 
 	const [modal, setModal] = useState(false);
@@ -15,27 +15,25 @@ function App() {
 
 	const handleNewExpense = () => {
 		setModal(true);
-
 		setTimeout(() => {
 			setAnimateModal(true);
 		}, 300);
 	};
 
 	const saveExpense = (expense) => {
-		setExpenses((prevExpenses) => [...prevExpenses, expense]);
-
 		setAnimateModal(false);
-
 		setTimeout(() => {
 			setModal(false);
 		}, 300);
+		setExpenses((prevExpenses) => [...prevExpenses, expense]);
 	};
 
 	return (
-		<div className={modal && "fijar"}>
+		<div className={modal ? "fijar" : ""}>
 			<Header
-				presupuesto={presupuesto}
-				setPresupuesto={setPresupuesto}
+				expenses={expenses}
+				budget={budget}
+				setBudget={setBudget}
 				isValidBudget={isValidBudget}
 				setIsValidBudget={setIsValidBudget}
 			/>
