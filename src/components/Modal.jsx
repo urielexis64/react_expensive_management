@@ -1,20 +1,29 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Message from "./Message";
 import Close from "../img/cerrar.svg";
-import {generateId} from "../helpers";
 
-const Modal = ({setModal, animateModal, setAnimateModal, saveExpense}) => {
+const Modal = ({
+	setModal,
+	animateModal,
+	setAnimateModal,
+	saveExpense,
+	editExpense,
+	setEditExpense,
+}) => {
 	const [message, setMessage] = useState("");
 
 	const [name, setName] = useState("");
 	const [amount, setAmount] = useState(0);
 	const [category, setCategory] = useState("");
+	const [date, setDate] = useState();
+	const [id, setId] = useState("");
 
 	const handleCloseModal = () => {
 		setAnimateModal(false);
 		setTimeout(() => {
 			setModal(false);
 		}, 300);
+		setEditExpense({});
 	};
 
 	const handleSubmit = (e) => {
@@ -31,13 +40,21 @@ const Modal = ({setModal, animateModal, setAnimateModal, saveExpense}) => {
 			name,
 			amount,
 			category,
-			id: generateId(),
-			date: Date.now(),
 		};
 
 		setMessage("");
 		saveExpense(expense);
 	};
+
+	useEffect(() => {
+		if (editExpense.id) {
+			setName(editExpense.name);
+			setAmount(editExpense.amount);
+			setCategory(editExpense.category);
+			setDate(editExpense.date);
+			setId(editExpense.id);
+		}
+	}, []);
 
 	return (
 		<div className='modal'>
@@ -47,7 +64,7 @@ const Modal = ({setModal, animateModal, setAnimateModal, saveExpense}) => {
 			<form
 				onSubmit={handleSubmit}
 				className={`formulario ${animateModal ? "animar" : "cerrar"}`}>
-				<legend>New Expense</legend>
+				<legend>{editExpense.id ? "Edit expense" : "New Expense"}</legend>
 
 				{message && <Message tipo='error'>{message}</Message>}
 
@@ -88,7 +105,11 @@ const Modal = ({setModal, animateModal, setAnimateModal, saveExpense}) => {
 					</select>
 				</div>
 
-				<input type='submit' className='btn' value='Add Expense' />
+				<input
+					type='submit'
+					className='btn'
+					value={editExpense.id ? "Save changes" : "Add Expense"}
+				/>
 			</form>
 		</div>
 	);
